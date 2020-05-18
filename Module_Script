@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+#"subprocess" module is used to perform terminal based commands and subprocess
+#"re" module is used to perform Regular Expressions or Regex task
 import subprocess as su
 import re
 
