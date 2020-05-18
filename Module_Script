@@ -1,0 +1,44 @@
+#!/usr/bin/env python
+
+import subprocess as su
+import re
+
+#Commands for changing MAC_Address is as follows
+#ifconfig eth0 down (This command will shut down the eth0 port)
+#ifconfig eth0 hw ether 00:11:22:33:44:55
+#(This command changes the MAC address, ether is the reference name for MAC address)
+#ifconfig eth0 up (This command gets the eth0 port up and running)
+
+
+# We have to create two classes one of which will pick up the value of MAC address
+# While the second class will change the value of the MAC Address
+
+
+class MAC_Changer:
+    def __init__(self): #This is a constructor
+        self.MAC =""
+        
+    def get_MAC_address(self, interface): #This function will capture the value of MAC address
+        #This function will use itself as an input and value of interface as second parameter
+        output = su.run(["ifconfig", interface], shell = False, capture_output = True)
+        result = output.stdout.decode('utf-8')
+        print(result)
+        pattern = r'ether\s[\da-z]{2}:[\da-z]{2}:[\da-z]{2}:[\da-z]{2}:[\da-z]{2}:[\da-z]{2}'
+        regex = re.compile(pattern)
+        output = regex.search(result)
+        current_MAC = output.group().split(" ")[1]
+        self.MAC = current_MAC
+        return current_MAC
+        
+       def change_MAC(self, interface, new_MAC):
+           print("[+] Current MAC Address is ", self.get_MAC_address(interface))
+           output = su.run(["ifconfig", interface, "down", shell = False, capture_output = True)
+           print(output.stderr.decode('utf-8'))
+           output = su.run(["ifconfig", interface, "hw", "ether", new_MAC], shell = False, capture_output = True0
+           print(output.stderr.decode('utf-8'))
+           output = su.run(["ifconfig", interface, "up"], shell = False, capture_output = True)
+           print(output.stderr.decode('utf-8'))
+           print("[+] Updated MAC Address is ", self.get_MAC_address(interface)
+           return self.get_MAC_address(interface)
+           
+           #To run this command use change_MAC(<name of your network interface>, The new address of your choice)
