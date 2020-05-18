@@ -1,0 +1,8 @@
+from mac import MAC_Changer
+
+if __name__ == "__main__":
+	first = MAC_Changer()
+	MAC = first.get_MAC_address("wlo1")
+	print(MAC)
+  
+  #code for changing the MAC address goes here
